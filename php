@@ -4,7 +4,10 @@ set -e
 
 # TODO: try to figure something out when users prefer to use the current working directory to be searched first for the .php-version file instead of the directory in which the file you call is used
 
-# figure out directory of script being called
+# absolute path of current script
+PHP_AUTO_VERSION_SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+# figure out directory of script which is being called
 PHP_AUTO_VERSION_DIR=""
 program="${0##*/}"
 
@@ -70,9 +73,22 @@ fi
 
 # figure out absolute path to the binary when we can find it in the PATH
 # if 'system' is used, try to find a normal 'php' executable in the PATH
+remove_from_path() {
+  local path_to_remove="$1"
+  local path_before
+  local result=":${PATH//\~/$HOME}:"
+  while [ "$path_before" != "$result" ]; do
+    path_before="$result"
+    result="${result//:$path_to_remove:/:}"
+  done
+  result="${result%:}"
+  echo "${result#:}"
+}
+
 PHP_AUTO_VERSION_BINARY_PATH=""
 if [ "$PHP_AUTO_VERSION_BINARY" = "system" ]; then
-    # TODO: manipulate path so this script itself isn't found?
+    # manipulate path so this script itself isn't found in the path
+    PATH="$(remove_from_path "$PHP_AUTO_VERSION_SCRIPT_DIR")"
     PHP_AUTO_VERSION_BINARY_PATH="$(command -v php || true)"
 elif [ -n "$PHP_AUTO_VERSION_BINARY" ]; then
     PHP_AUTO_VERSION_BINARY_PATH="$(command -v "$PHP_AUTO_VERSION_BINARY" || true)"
