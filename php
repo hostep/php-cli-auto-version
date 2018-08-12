@@ -13,9 +13,18 @@ program="${0##*/}"
 
 if [ "$program" = "php" ]; then
   for arg; do
+    if [ "$SKIP_LOOP_AGAIN" = "1" ]; then
+      SKIP_LOOP_AGAIN="0"
+      continue
+    fi
+
     case "$arg" in
-    -r* | -- ) break ;; # TODO: what to do with the arguments provided in the -F and -c flags? They might get picked up incorrectly
-    */* )
+    -r* | -- ) break ;; # flag -r is used to execute inline code, so just skip searching for files in args, '--' is too provide extra args at the end, which also shouldn't manipulate php version, so stop searching further when encountering those
+    -c=* | -F=* | -t=* | -z=* ) continue ;;  # flags -c, -F, -t and -z can provide file paths which shouldn't be taken in consideration for what php version to use, so skip those, version with '='
+    -c* | -F* | -t* | -z* ) # version without '=' but with spaces
+      SKIP_LOOP_AGAIN="1" # next argument is the path, so make sure we skip the loop twice
+      continue ;;
+    */* ) # matches a file path
       if [ -f "$arg" ]; then
         PHP_CLI_AUTO_VERSION_DIR="${arg%/*}"
         break
