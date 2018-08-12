@@ -3,6 +3,8 @@ set -e
 # set -x # debugging only
 unset CDPATH
 
+PHP_CLI_AUTO_VERSION_FLAG_FILENAME='.php-version'
+
 # TODO: try to figure something out when users prefer to use the current working directory to be searched first for the .php-version file instead of the directory in which the file you call is used
 
 # absolute path of current script
@@ -49,8 +51,8 @@ PHP_CLI_AUTO_VERSION_FILE=""
 find_local_version_file() {
     local root="$1"
     while ! [[ "$root" =~ ^//[^/]*$ ]]; do
-        if [ -e "$root/.php-version" ]; then
-            PHP_CLI_AUTO_VERSION_FILE="${root}/.php-version"
+        if [ -e "$root/$PHP_CLI_AUTO_VERSION_FLAG_FILENAME" ]; then
+            PHP_CLI_AUTO_VERSION_FILE="${root}/$PHP_CLI_AUTO_VERSION_FLAG_FILENAME"
             return 0
         fi
         [ -n "$root" ] || break
