@@ -11,7 +11,7 @@ PHP_CLI_AUTO_VERSION_SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd 
 PHP_CLI_AUTO_VERSION_DIR=""
 program="${0##*/}"
 
-if [ "$program" = "p" ]; then
+if [ "$program" = "php" ]; then
   for arg; do
     case "$arg" in
     -r* | -- ) break ;; # TODO: what to do with the arguments provided in the -F and -c flags? They might get picked up incorrectly
