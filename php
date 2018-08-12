@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 # set -x # debugging only
+unset CDPATH
 
 # TODO: try to figure something out when users prefer to use the current working directory to be searched first for the .php-version file instead of the directory in which the file you call is used
 
