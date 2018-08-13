@@ -22,7 +22,7 @@ if [ "$program" = "php" ]; then
     fi
 
     case "$arg" in
-    -r* | -- ) break ;; # flag -r is used to execute inline code, so just skip searching for files in args, '--' is too provide extra args at the end, which also shouldn't manipulate php version, so stop searching further when encountering those
+    -r* | -- ) break ;; # flag -r is used to execute inline code, so just skip searching for files in args, '--' is to provide extra args at the end, which also shouldn't manipulate php version, so stop searching further when encountering those
     -c=* | -F=* | -t=* | -z=* ) continue ;;  # flags -c, -F, -t and -z can provide file paths which shouldn't be taken in consideration for what php version to use, so skip those, version with '='
     -c* | -F* | -t* | -z* ) # version without '=' but with spaces
       SKIP_LOOP_AGAIN="1" # next argument is the path, so make sure we skip the loop twice
@@ -38,10 +38,18 @@ if [ "$program" = "php" ]; then
 fi
 
 # create absolute path from relative path
+abort() {
+  { if [ "$#" -eq 0 ]; then cat -
+    else echo "php-cli-auto-version: $*"
+    fi
+  } >&2
+  exit 1
+}
+
 if [ -z "${PHP_CLI_AUTO_VERSION_DIR}" ]; then
   PHP_CLI_AUTO_VERSION_DIR="$PWD"
 else
-  cd "$PHP_CLI_AUTO_VERSION_DIR" 2>/dev/null || abort "cannot change working directory to \`$PHP_CLI_AUTO_VERSION_DIR'"
+  cd "$PHP_CLI_AUTO_VERSION_DIR" 2>/dev/null || abort "cannot change working directory to '$PHP_CLI_AUTO_VERSION_DIR'"
   PHP_CLI_AUTO_VERSION_DIR="$PWD"
   cd "$OLDPWD"
 fi
