@@ -70,7 +70,7 @@ find_local_version_file() {
 }
 find_local_version_file "$PHP_CLI_AUTO_VERSION_DIR" || {
     [ "$PHP_CLI_AUTO_VERSION_DIR" != "$PWD" ] && find_local_version_file "$PWD"
-}
+} || true
 
 # extract php binary to use from the '.php-version' file when found
 PHP_CLI_AUTO_VERSION_BINARY=""
