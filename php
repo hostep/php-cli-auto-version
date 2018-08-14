@@ -108,8 +108,10 @@ remove_from_path() {
 PHP_CLI_AUTO_VERSION_BINARY_PATH=""
 if [ "$PHP_CLI_AUTO_VERSION_BINARY" = "system" ]; then
     # manipulate path so this script itself isn't found in the path
+    OLDPATH="$PATH"
     PATH="$(remove_from_path "$PHP_CLI_AUTO_VERSION_SCRIPT_DIR")"
     PHP_CLI_AUTO_VERSION_BINARY_PATH="$(command -v php || true)"
+    PATH="$OLDPATH"
 elif [ -n "$PHP_CLI_AUTO_VERSION_BINARY" ]; then
     PHP_CLI_AUTO_VERSION_BINARY_PATH="$(command -v "$PHP_CLI_AUTO_VERSION_BINARY" || true)"
 fi
