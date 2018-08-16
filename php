@@ -3,9 +3,9 @@ set -e
 # set -x # debugging only
 unset CDPATH
 
-PHP_CLI_AUTO_VERSION_FLAG_FILENAME='.php-version'
+PHP_CLI_AUTO_VERSION_FLAG_FILENAME='.php-auto-version'
 
-# TODO: try to figure something out when users prefer to use the current working directory to be searched first for the .php-version file instead of the directory in which the file you call is used
+# TODO: try to figure something out when users prefer to use the current working directory to be searched first for the .php-auto-version file instead of the directory in which the file you call is used
 
 # absolute path of current script
 PHP_CLI_AUTO_VERSION_SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
@@ -54,7 +54,7 @@ else
   cd "$OLDPWD"
 fi
 
-# try to find the file '.php-version' in the current directory or one of the above
+# try to find the file '.php-auto-version' in the current directory or one of the above
 PHP_CLI_AUTO_VERSION_FILE=""
 find_local_version_file() {
     local root="$1"
@@ -72,7 +72,7 @@ find_local_version_file "$PHP_CLI_AUTO_VERSION_DIR" || {
     [ "$PHP_CLI_AUTO_VERSION_DIR" != "$PWD" ] && find_local_version_file "$PWD"
 } || true
 
-# extract php binary to use from the '.php-version' file when found
+# extract php binary to use from the '.php-auto-version' file when found
 PHP_CLI_AUTO_VERSION_BINARY=""
 if [ -e "$PHP_CLI_AUTO_VERSION_FILE" ]; then
   # Read the first non-whitespace word from the specified version file.

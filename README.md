@@ -5,7 +5,7 @@
 This project was heavily inspired by the shims provided by [rbenv](https://github.com/rbenv/rbenv) and [nodenv](https://github.com/nodenv/nodenv) and copies a bunch of code from those projects.
 
 But this is by no means a php variant of those 2 projects. It won't install php versions for example.  
-This only takes the shim functionality and allows you to specify in a special file `.php-version` which specific php executable it should use per project, whenever `php` is executed. This also works when not explicitly calling the `php` command, but also works implicitly when a `.php` file is executable or when a `.phar` file gets executed for example.
+This only takes the shim functionality and allows you to specify in a special file `.php-auto-version` which specific php executable it should use per project, whenever `php` is executed. This also works when not explicitly calling the `php` command, but also works implicitly when a `.php` file is executable or when a `.phar` file gets executed for example.
 
 This was written for macOS (tested using 10.13.6), tested with `GNU bash, version 3.2.57(1)-release (x86_64-apple-darwin17)`, but might work on other POSIX-compliant shells.
 
@@ -37,22 +37,22 @@ export PATH="$HOME/bin:$PATH"
 # now, make sure you restart your shell or source the changed .bash_profile file, so the new $PATH variable is getting used
 ```
 
-Next up is adding a special file `.php-version` to various projects in which we set the path to the specific php executable we want to use. You can just specify the executable filename if the executables are in your `$PATH` or you can use the absolute filename. Both work perfectly fine.  
-The script will search up in the directory tree until it finds a `.php-version` file, so you can be inside a subdirectory of a project and it will still pick the correct version.  
-If no `.php-version` file can be found, it will fall back to the default `php` executable which it tries to find in the rest of your `$PATH`.
+Next up is adding a special file `.php-auto-version` to various projects in which we set the path to the specific php executable we want to use. You can just specify the executable filename if the executables are in your `$PATH` or you can use the absolute filename. Both work perfectly fine.  
+The script will search up in the directory tree until it finds a `.php-auto-version` file, so you can be inside a subdirectory of a project and it will still pick the correct version.  
+If no `.php-auto-version` file can be found, it will fall back to the default `php` executable which it tries to find in the rest of your `$PATH`.
 
 ### Some examples
 
 ```bash
 # I have 5 test projects, each needing a different php version:
 $ find -s . -type f
-./project-running-php-55/.php-version
-./project-running-php-56/.php-version
-./project-running-php-70/.php-version
-./project-running-php-71/.php-version
-./project-running-php-72/.php-version
+./project-running-php-55/.php-auto-version
+./project-running-php-56/.php-auto-version
+./project-running-php-70/.php-auto-version
+./project-running-php-71/.php-auto-version
+./project-running-php-72/.php-auto-version
 
-# Here is the contents of those .php-version files of each of these projects
+# Here is the contents of those .php-auto-version files of each of these projects
 $ find -s . -type f -exec cat {} \;
 php55
 php56
